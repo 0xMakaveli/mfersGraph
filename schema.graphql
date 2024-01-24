@@ -1,0 +1,14 @@
+type Transfer @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! 
+  from: Bytes! 
+  to: SBytes! 
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  owner: Bytes! # address
+}
