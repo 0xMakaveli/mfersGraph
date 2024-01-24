@@ -1,5 +1,6 @@
 type Transfer @entity(immutable: true) {
   id: Bytes!
+  tokenId: BigInt!
   from: Bytes! 
   to: Bytes! 
   #blockNumber: BigInt!

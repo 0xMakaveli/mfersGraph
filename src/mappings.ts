@@ -1,8 +1,9 @@
-import {Transfer, Transfer__Params} from "../generated/events.ts";
+import {Transfer, Transfer__Params} from "../generated/Contract/Contract";
 
 
 export function handleTransfer(event : Transfer): void {
-  let entity; 
+  let entity
+  entity.id= event.transaction.from.toHex()
   entity.from = event.params.from;
   entity.to = event.params.to;
   entity.tokenId = event.params.tokenId
