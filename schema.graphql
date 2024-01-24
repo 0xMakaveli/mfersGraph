@@ -8,7 +8,7 @@ type Transfer @entity(immutable: true) {
   #transactionHash: Bytes!
 }
 
-#type OwnershipTransferred @entity(immutable: true) {
-#  id: Bytes!
-#  owner: Bytes! # address
-#}
+type OwnershipTransferred @entity(immutable: true) {
+ previousOwner: Bytes!
+ newOwner: Bytes!
+}
