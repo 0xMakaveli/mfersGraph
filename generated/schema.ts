@@ -11,88 +11,7 @@ import {
   BigDecimal,
 } from "@graphprotocol/graph-ts";
 
-export class Transfer extends Entity {
-  constructor(id: Bytes) {
-    super();
-    this.set("id", Value.fromBytes(id));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save Transfer entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.BYTES,
-        `Entities of type Transfer must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`,
-      );
-      store.set("Transfer", id.toBytes().toHexString(), this);
-    }
-  }
-
-  static loadInBlock(id: Bytes): Transfer | null {
-    return changetype<Transfer | null>(
-      store.get_in_block("Transfer", id.toHexString()),
-    );
-  }
-
-  static load(id: Bytes): Transfer | null {
-    return changetype<Transfer | null>(store.get("Transfer", id.toHexString()));
-  }
-
-  get id(): Bytes {
-    let value = this.get("id");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set id(value: Bytes) {
-    this.set("id", Value.fromBytes(value));
-  }
-
-  get tokenId(): BigInt {
-    let value = this.get("tokenId");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBigInt();
-    }
-  }
-
-  set tokenId(value: BigInt) {
-    this.set("tokenId", Value.fromBigInt(value));
-  }
-
-  get from(): Bytes {
-    let value = this.get("from");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set from(value: Bytes) {
-    this.set("from", Value.fromBytes(value));
-  }
-
-  get to(): Bytes {
-    let value = this.get("to");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set to(value: Bytes) {
-    this.set("to", Value.fromBytes(value));
-  }
-}
-
-export class OwnershipTransferred extends Entity {
+export class Token extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -100,26 +19,22 @@ export class OwnershipTransferred extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save OwnershipTransferred entity without an ID");
+    assert(id != null, "Cannot save Token entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type OwnershipTransferred must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+        `Entities of type Token must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
       );
-      store.set("OwnershipTransferred", id.toString(), this);
+      store.set("Token", id.toString(), this);
     }
   }
 
-  static loadInBlock(id: string): OwnershipTransferred | null {
-    return changetype<OwnershipTransferred | null>(
-      store.get_in_block("OwnershipTransferred", id),
-    );
+  static loadInBlock(id: string): Token | null {
+    return changetype<Token | null>(store.get_in_block("Token", id));
   }
 
-  static load(id: string): OwnershipTransferred | null {
-    return changetype<OwnershipTransferred | null>(
-      store.get("OwnershipTransferred", id),
-    );
+  static load(id: string): Token | null {
+    return changetype<Token | null>(store.get("Token", id));
   }
 
   get id(): string {
@@ -135,29 +50,411 @@ export class OwnershipTransferred extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get previousOwner(): Bytes {
-    let value = this.get("previousOwner");
+  get tokenID(): BigInt {
+    let value = this.get("tokenID");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toBytes();
+      return value.toBigInt();
     }
   }
 
-  set previousOwner(value: Bytes) {
-    this.set("previousOwner", Value.fromBytes(value));
+  set tokenID(value: BigInt) {
+    this.set("tokenID", Value.fromBigInt(value));
   }
 
-  get newOwner(): Bytes {
-    let value = this.get("newOwner");
+  get tokenURI(): string {
+    let value = this.get("tokenURI");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toBytes();
+      return value.toString();
     }
   }
 
-  set newOwner(value: Bytes) {
-    this.set("newOwner", Value.fromBytes(value));
+  set tokenURI(value: string) {
+    this.set("tokenURI", Value.fromString(value));
+  }
+
+  get updatedAtTimestamp(): BigInt | null {
+    let value = this.get("updatedAtTimestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set updatedAtTimestamp(value: BigInt | null) {
+    if (!value) {
+      this.unset("updatedAtTimestamp");
+    } else {
+      this.set("updatedAtTimestamp", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
+export class TokenMetadata extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save TokenMetadata entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type TokenMetadata must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("TokenMetadata", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): TokenMetadata | null {
+    return changetype<TokenMetadata | null>(
+      store.get_in_block("TokenMetadata", id),
+    );
+  }
+
+  static load(id: string): TokenMetadata | null {
+    return changetype<TokenMetadata | null>(store.get("TokenMetadata", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get image(): string | null {
+    let value = this.get("image");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set image(value: string | null) {
+    if (!value) {
+      this.unset("image");
+    } else {
+      this.set("image", Value.fromString(<string>value));
+    }
+  }
+
+  get name(): string | null {
+    let value = this.get("name");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set name(value: string | null) {
+    if (!value) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(<string>value));
+    }
+  }
+
+  get description(): string | null {
+    let value = this.get("description");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set description(value: string | null) {
+    if (!value) {
+      this.unset("description");
+    } else {
+      this.set("description", Value.fromString(<string>value));
+    }
+  }
+
+  get trait_type_1(): string | null {
+    let value = this.get("trait_type_1");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set trait_type_1(value: string | null) {
+    if (!value) {
+      this.unset("trait_type_1");
+    } else {
+      this.set("trait_type_1", Value.fromString(<string>value));
+    }
+  }
+
+  get value_1(): string | null {
+    let value = this.get("value_1");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set value_1(value: string | null) {
+    if (!value) {
+      this.unset("value_1");
+    } else {
+      this.set("value_1", Value.fromString(<string>value));
+    }
+  }
+
+  get trait_type_2(): string | null {
+    let value = this.get("trait_type_2");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set trait_type_2(value: string | null) {
+    if (!value) {
+      this.unset("trait_type_2");
+    } else {
+      this.set("trait_type_2", Value.fromString(<string>value));
+    }
+  }
+
+  get value_2(): string | null {
+    let value = this.get("value_2");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set value_2(value: string | null) {
+    if (!value) {
+      this.unset("value_2");
+    } else {
+      this.set("value_2", Value.fromString(<string>value));
+    }
+  }
+
+  get trait_type_3(): string | null {
+    let value = this.get("trait_type_3");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set trait_type_3(value: string | null) {
+    if (!value) {
+      this.unset("trait_type_3");
+    } else {
+      this.set("trait_type_3", Value.fromString(<string>value));
+    }
+  }
+
+  get value_3(): string | null {
+    let value = this.get("value_3");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set value_3(value: string | null) {
+    if (!value) {
+      this.unset("value_3");
+    } else {
+      this.set("value_3", Value.fromString(<string>value));
+    }
+  }
+
+  get trait_type_4(): string | null {
+    let value = this.get("trait_type_4");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set trait_type_4(value: string | null) {
+    if (!value) {
+      this.unset("trait_type_4");
+    } else {
+      this.set("trait_type_4", Value.fromString(<string>value));
+    }
+  }
+
+  get value_4(): string | null {
+    let value = this.get("value_4");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set value_4(value: string | null) {
+    if (!value) {
+      this.unset("value_4");
+    } else {
+      this.set("value_4", Value.fromString(<string>value));
+    }
+  }
+
+  get trait_type_5(): string | null {
+    let value = this.get("trait_type_5");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set trait_type_5(value: string | null) {
+    if (!value) {
+      this.unset("trait_type_5");
+    } else {
+      this.set("trait_type_5", Value.fromString(<string>value));
+    }
+  }
+
+  get value_5(): string | null {
+    let value = this.get("value_5");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set value_5(value: string | null) {
+    if (!value) {
+      this.unset("value_5");
+    } else {
+      this.set("value_5", Value.fromString(<string>value));
+    }
+  }
+
+  get trait_type_6(): string | null {
+    let value = this.get("trait_type_6");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set trait_type_6(value: string | null) {
+    if (!value) {
+      this.unset("trait_type_6");
+    } else {
+      this.set("trait_type_6", Value.fromString(<string>value));
+    }
+  }
+
+  get value_6(): string | null {
+    let value = this.get("value_6");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set value_6(value: string | null) {
+    if (!value) {
+      this.unset("value_6");
+    } else {
+      this.set("value_6", Value.fromString(<string>value));
+    }
+  }
+
+  get trait_type_7(): string | null {
+    let value = this.get("trait_type_7");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set trait_type_7(value: string | null) {
+    if (!value) {
+      this.unset("trait_type_7");
+    } else {
+      this.set("trait_type_7", Value.fromString(<string>value));
+    }
+  }
+
+  get value_7(): string | null {
+    let value = this.get("value_7");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set value_7(value: string | null) {
+    if (!value) {
+      this.unset("value_7");
+    } else {
+      this.set("value_7", Value.fromString(<string>value));
+    }
+  }
+
+  get trait_type_8(): string | null {
+    let value = this.get("trait_type_8");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set trait_type_8(value: string | null) {
+    if (!value) {
+      this.unset("trait_type_8");
+    } else {
+      this.set("trait_type_8", Value.fromString(<string>value));
+    }
+  }
+
+  get value_8(): string | null {
+    let value = this.get("value_8");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set value_8(value: string | null) {
+    if (!value) {
+      this.unset("value_8");
+    } else {
+      this.set("value_8", Value.fromString(<string>value));
+    }
   }
 }
