@@ -3,6 +3,7 @@ schema:
   file: ./schema.graphql
 features:
   - ipfsOnEthereumContracts
+  - fullTextSearch   
 dataSources:
   - kind: ethereum
     name: Contract
@@ -30,10 +31,10 @@ templates:
     mapping:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
-      file: ./src/mappings/mapping.ts
+      file: ./src/mappings/mappings.ts
       handler: handleMetadata
       entities:
         - TokenMetadata
       abis:
         - name: Contract
-          file: ./abis/Contract.json      
+          file: ./abis/Contract.json    

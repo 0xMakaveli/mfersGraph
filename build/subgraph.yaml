@@ -1,6 +1,9 @@
 specVersion: 0.0.5
 schema:
   file: schema.graphql
+features:
+  - ipfsOnEthereumContracts
+  - fullTextSearch
 dataSources:
   - kind: ethereum
     name: Contract
@@ -14,14 +17,24 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - Transfer
-        - OwnershipTransferred
+        - Token
       abis:
         - name: Contract
           file: Contract\abis\Contract.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransfer
       file: Contract\Contract.wasm
+templates:
+  - name: TokenMetadata
+    kind: file/ipfs
+    mapping:
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: Contract\Contract.wasm
+      handler: handleMetadata
+      entities:
+        - TokenMetadata
+      abis:
+        - name: Contract
+          file: TokenMetadata\abis\Contract.json
