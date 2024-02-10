@@ -1,19 +1,22 @@
-import {Transfer as TransferEvent, Contract} from "../../generated/Contract/Contract";
+import {Transfer as TransferEvent} from "../../generated/Contract/Contract";
 import {Token,TokenMetadata} from "../../generated/schema"
 import {TokenMetadata as TokenMetadataTemplate} from "../../generated/templates"
 import { json, Bytes, dataSource } from '@graphprotocol/graph-ts'
 
 
-const ipfsHash = "QmbAvUyPA1E3Xe2bNhsHpnaqZYNpdwdfRjw3YGKaA9dMzk";
+const ipfsHash = "QmWiQE65tmpYzcokCheQmng2DCM33DEhjXcPB6PanwpAZo";
 export function handleTransfer(event : TransferEvent): void {
-  const entity = new Token(event.transaction.hash.toString());
-  entity.tokenID = event.params.tokenId;
-  entity.tokenURI = event.params.tokenId.toString(); 
-  entity.updatedAtTimestamp = event.block.timestamp;
-  const ipfsHashURI  = ipfsHash + entity.tokenURI;
-  TokenMetadataTemplate.create(ipfsHashURI);
-  entity.save()
-
+    let entity = Token.load(event.params.tokenId.toString());
+    if(entity) {
+      const entity = new Token(event.params.tokenId.toString());
+      entity.tokenID = event.params.tokenId;
+      entity.tokenURI = event.params.tokenId.toString(); 
+      entity.updatedAtTimestamp = event.block.timestamp;
+      const ipfsHashURI  = ipfsHash +"/"+ entity.tokenURI;
+      entity.ipfsHashURI = ipfsHashURI;
+      TokenMetadataTemplate.create(ipfsHashURI);
+      entity.save()
+    }
 }
 
 export function handleMetadata(content: Bytes ): void {

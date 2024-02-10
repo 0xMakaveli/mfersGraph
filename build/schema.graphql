@@ -2,6 +2,7 @@ type Token @entity {
     id: ID!
     tokenID: BigInt!
     tokenURI: String!
+    ipfsHashURI:String!
     updatedAtTimestamp: BigInt
 }
 

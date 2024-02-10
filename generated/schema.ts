@@ -76,6 +76,19 @@ export class Token extends Entity {
     this.set("tokenURI", Value.fromString(value));
   }
 
+  get ipfsHashURI(): string {
+    let value = this.get("ipfsHashURI");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set ipfsHashURI(value: string) {
+    this.set("ipfsHashURI", Value.fromString(value));
+  }
+
   get updatedAtTimestamp(): BigInt | null {
     let value = this.get("updatedAtTimestamp");
     if (!value || value.kind == ValueKind.NULL) {
