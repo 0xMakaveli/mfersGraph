@@ -29,11 +29,11 @@ export function handleMetadata(content: Bytes): void {
 	if (value) {
 		const image = value.get("image");
 		const name = value.get("name");
-		const attributes = value.get("attributes");
+		//const attributes = value.get("attributes");
 
 		// Assemblyscript needs to have nullchecks. If the value exists, then we can proceed with the creating an image, name, and attributes variable gathered from the json object.
 
-		if (name && image && attributes) {
+		if (name && image) {
 			tokenMetadata.name = name.toString();
 			tokenMetadata.image = image.toString();
 			//const attributesArray = attributes.toArray();
