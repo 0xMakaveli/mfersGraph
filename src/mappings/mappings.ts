@@ -37,7 +37,7 @@ export function handleMetadata(content: Bytes): void {
 			tokenMetadata.name = name.toString();
 			tokenMetadata.image = image.toString();
 			//const attributesArray = attributes.toArray();
-      tokenMetadata.save();
+      		tokenMetadata.save();
 		}
 	}
 }
