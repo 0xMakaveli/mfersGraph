@@ -6,20 +6,20 @@ import { json, Bytes, dataSource } from '@graphprotocol/graph-ts'
 
 const ipfsHash = "QmWiQE65tmpYzcokCheQmng2DCM33DEhjXcPB6PanwpAZo";
 export function handleTransfer(event : TransferEvent): void {
-    let entity = Token.load(event.params.tokenId.toString());
-    if(entity) {
-      const entity = new Token(event.params.tokenId.toString());
-      entity.tokenID = event.params.tokenId;
-      entity.tokenURI = event.params.tokenId.toString(); 
-      entity.updatedAtTimestamp = event.block.timestamp;
-      const ipfsHashURI  = ipfsHash +"/"+ entity.tokenURI;
-      entity.ipfsHashURI = ipfsHashURI;
+    let token = Token.load(event.params.tokenId.toString());
+    if(token) {
+      const token = new Token(event.params.tokenId.toString());
+      token.tokenID = event.params.tokenId;
+      token.tokenURI =  '/' + event.params.tokenId.toString(); 
+      token.updatedAtTimestamp = event.block.timestamp;
+      const ipfsHashURI  = ipfsHash + token.tokenURI;
+      token.ipfsHashURI = ipfsHashURI;
       TokenMetadataTemplate.create(ipfsHashURI);
-      entity.save()
+      token.save();
     }
 }
 
-export function handleMetadata(content: Bytes ): void {
+export function handleMetadata(content:Bytes): void {
     let tokenmetadata  = new TokenMetadata(dataSource.stringParam());
     const value = json.fromBytes(content).toObject();
     if(value)
@@ -29,8 +29,8 @@ export function handleMetadata(content: Bytes ): void {
       const description = value.get("description");
       const attributes  = value.get("attributes");
       if(image && name && description && attributes) {
-            tokenmetadata.name = name.toString()
-            tokenmetadata.image = image.toString()
+            tokenmetadata.name = name.toString();
+            tokenmetadata.image = image.toString();
             tokenmetadata.description = description.toString()
             const attributesArray = attributes.toArray();
             if(attributesArray) {
