@@ -10,7 +10,7 @@ export function handleTransfer(event : TransferEvent): void {
     if(token) {
       const token = new Token(event.params.tokenId.toString());
       token.tokenID = event.params.tokenId;
-      token.tokenURI =  '/' + event.params.tokenId.toString(); 
+      token.tokenURI =  "/" + event.params.tokenId.toString(); 
       token.updatedAtTimestamp = event.block.timestamp;
       const ipfsHashURI  = ipfsHash + token.tokenURI;
       token.ipfsHashURI = ipfsHashURI;
