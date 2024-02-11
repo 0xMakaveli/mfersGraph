@@ -76,17 +76,21 @@ export class Token extends Entity {
     this.set("tokenURI", Value.fromString(value));
   }
 
-  get ipfsHashURI(): string {
+  get ipfsHashURI(): string | null {
     let value = this.get("ipfsHashURI");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toString();
     }
   }
 
-  set ipfsHashURI(value: string) {
-    this.set("ipfsHashURI", Value.fromString(value));
+  set ipfsHashURI(value: string | null) {
+    if (!value) {
+      this.unset("ipfsHashURI");
+    } else {
+      this.set("ipfsHashURI", Value.fromString(<string>value));
+    }
   }
 
   get updatedAtTimestamp(): BigInt | null {
@@ -148,326 +152,29 @@ export class TokenMetadata extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get image(): string | null {
+  get image(): string {
     let value = this.get("image");
     if (!value || value.kind == ValueKind.NULL) {
-      return null;
+      throw new Error("Cannot return null for a required field.");
     } else {
       return value.toString();
     }
   }
 
-  set image(value: string | null) {
-    if (!value) {
-      this.unset("image");
-    } else {
-      this.set("image", Value.fromString(<string>value));
-    }
+  set image(value: string) {
+    this.set("image", Value.fromString(value));
   }
 
-  get name(): string | null {
+  get name(): string {
     let value = this.get("name");
     if (!value || value.kind == ValueKind.NULL) {
-      return null;
+      throw new Error("Cannot return null for a required field.");
     } else {
       return value.toString();
     }
   }
 
-  set name(value: string | null) {
-    if (!value) {
-      this.unset("name");
-    } else {
-      this.set("name", Value.fromString(<string>value));
-    }
-  }
-
-  get description(): string | null {
-    let value = this.get("description");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set description(value: string | null) {
-    if (!value) {
-      this.unset("description");
-    } else {
-      this.set("description", Value.fromString(<string>value));
-    }
-  }
-
-  get trait_type_1(): string | null {
-    let value = this.get("trait_type_1");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set trait_type_1(value: string | null) {
-    if (!value) {
-      this.unset("trait_type_1");
-    } else {
-      this.set("trait_type_1", Value.fromString(<string>value));
-    }
-  }
-
-  get value_1(): string | null {
-    let value = this.get("value_1");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set value_1(value: string | null) {
-    if (!value) {
-      this.unset("value_1");
-    } else {
-      this.set("value_1", Value.fromString(<string>value));
-    }
-  }
-
-  get trait_type_2(): string | null {
-    let value = this.get("trait_type_2");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set trait_type_2(value: string | null) {
-    if (!value) {
-      this.unset("trait_type_2");
-    } else {
-      this.set("trait_type_2", Value.fromString(<string>value));
-    }
-  }
-
-  get value_2(): string | null {
-    let value = this.get("value_2");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set value_2(value: string | null) {
-    if (!value) {
-      this.unset("value_2");
-    } else {
-      this.set("value_2", Value.fromString(<string>value));
-    }
-  }
-
-  get trait_type_3(): string | null {
-    let value = this.get("trait_type_3");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set trait_type_3(value: string | null) {
-    if (!value) {
-      this.unset("trait_type_3");
-    } else {
-      this.set("trait_type_3", Value.fromString(<string>value));
-    }
-  }
-
-  get value_3(): string | null {
-    let value = this.get("value_3");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set value_3(value: string | null) {
-    if (!value) {
-      this.unset("value_3");
-    } else {
-      this.set("value_3", Value.fromString(<string>value));
-    }
-  }
-
-  get trait_type_4(): string | null {
-    let value = this.get("trait_type_4");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set trait_type_4(value: string | null) {
-    if (!value) {
-      this.unset("trait_type_4");
-    } else {
-      this.set("trait_type_4", Value.fromString(<string>value));
-    }
-  }
-
-  get value_4(): string | null {
-    let value = this.get("value_4");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set value_4(value: string | null) {
-    if (!value) {
-      this.unset("value_4");
-    } else {
-      this.set("value_4", Value.fromString(<string>value));
-    }
-  }
-
-  get trait_type_5(): string | null {
-    let value = this.get("trait_type_5");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set trait_type_5(value: string | null) {
-    if (!value) {
-      this.unset("trait_type_5");
-    } else {
-      this.set("trait_type_5", Value.fromString(<string>value));
-    }
-  }
-
-  get value_5(): string | null {
-    let value = this.get("value_5");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set value_5(value: string | null) {
-    if (!value) {
-      this.unset("value_5");
-    } else {
-      this.set("value_5", Value.fromString(<string>value));
-    }
-  }
-
-  get trait_type_6(): string | null {
-    let value = this.get("trait_type_6");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set trait_type_6(value: string | null) {
-    if (!value) {
-      this.unset("trait_type_6");
-    } else {
-      this.set("trait_type_6", Value.fromString(<string>value));
-    }
-  }
-
-  get value_6(): string | null {
-    let value = this.get("value_6");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set value_6(value: string | null) {
-    if (!value) {
-      this.unset("value_6");
-    } else {
-      this.set("value_6", Value.fromString(<string>value));
-    }
-  }
-
-  get trait_type_7(): string | null {
-    let value = this.get("trait_type_7");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set trait_type_7(value: string | null) {
-    if (!value) {
-      this.unset("trait_type_7");
-    } else {
-      this.set("trait_type_7", Value.fromString(<string>value));
-    }
-  }
-
-  get value_7(): string | null {
-    let value = this.get("value_7");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set value_7(value: string | null) {
-    if (!value) {
-      this.unset("value_7");
-    } else {
-      this.set("value_7", Value.fromString(<string>value));
-    }
-  }
-
-  get trait_type_8(): string | null {
-    let value = this.get("trait_type_8");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set trait_type_8(value: string | null) {
-    if (!value) {
-      this.unset("trait_type_8");
-    } else {
-      this.set("trait_type_8", Value.fromString(<string>value));
-    }
-  }
-
-  get value_8(): string | null {
-    let value = this.get("value_8");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set value_8(value: string | null) {
-    if (!value) {
-      this.unset("value_8");
-    } else {
-      this.set("value_8", Value.fromString(<string>value));
-    }
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
   }
 }

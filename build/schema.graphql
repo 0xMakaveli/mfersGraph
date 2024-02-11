@@ -2,29 +2,12 @@ type Token @entity {
     id: ID!
     tokenID: BigInt!
     tokenURI: String!
-    ipfsHashURI:String!
+    ipfsHashURI:TokenMetadata
     updatedAtTimestamp: BigInt
 }
 
 type TokenMetadata @entity {
-id:ID!
-image:String
-name:String
-description:String
-trait_type_1:String
-value_1:String
-trait_type_2:String
-value_2:String
-trait_type_3:String
-value_3:String
-trait_type_4:String
-value_4:String
-trait_type_5:String
-value_5:String
-trait_type_6:String
-value_6:String
-trait_type_7:String
-value_7:String
-trait_type_8:String
-value_8:String
+    id: ID!
+    image: String!
+    name: String!
 }
