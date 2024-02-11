@@ -22,22 +22,15 @@ export function handleTransfer(event: TransferEvent): void {
 
 export function handleMetadata(content: Bytes): void {
 	let tokenMetadata = new TokenMetadata(dataSource.stringParam());
-	// Create a new TokenMetadata entity and pass in the dataSource as its ID. This is the ipfsHashUri that we created in the handleTransfer function above.
-
 	const value = json.fromBytes(content).toObject();
-	// Create a value variable that will be used to store the json object that is passed in as the content parameter.
 	if (value) {
 		const image = value.get("image");
 		const name = value.get("name");
-		//const attributes = value.get("attributes");
-
-		// Assemblyscript needs to have nullchecks. If the value exists, then we can proceed with the creating an image, name, and attributes variable gathered from the json object.
-
 		if (name && image) {
-			tokenMetadata.name = name.toString();
-			tokenMetadata.image = image.toString();
-			//const attributesArray = attributes.toArray();
-      		tokenMetadata.save();
+				tokenMetadata.name = name.toString();
+				tokenMetadata.image = image.toString();
+				//const attributesArray = attributes.toArray();
+      			tokenMetadata.save();
 		}
 	}
 }
