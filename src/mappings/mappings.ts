@@ -1,4 +1,4 @@
-import {Transfer as TransferEvent} from "../../generated/Contract/Contract";
+import {Transfer as TransferEvent} from "../../generated/mfers/mfers";
 import {Token,TokenMetadata} from "../../generated/schema"
 import {TokenMetadata as TokenMetadataTemplate} from "../../generated/templates"
 import { json, Bytes, dataSource } from '@graphprotocol/graph-ts'
@@ -29,7 +29,6 @@ export function handleMetadata(content: Bytes): void {
 		if (name && image) {
 				tokenMetadata.name = name.toString();
 				tokenMetadata.image = image.toString();
-				//const attributesArray = attributes.toArray();
       			tokenMetadata.save();
 		}
 	}
