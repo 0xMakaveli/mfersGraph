@@ -63,6 +63,19 @@ export class Token extends Entity {
     this.set("tokenID", Value.fromBigInt(value));
   }
 
+  get owner(): string {
+    let value = this.get("owner");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
+  }
+
   get tokenURI(): string {
     let value = this.get("tokenURI");
     if (!value || value.kind == ValueKind.NULL) {
@@ -176,5 +189,67 @@ export class TokenMetadata extends Entity {
 
   set name(value: string) {
     this.set("name", Value.fromString(value));
+  }
+}
+
+export class User extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save User entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type User must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("User", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): User | null {
+    return changetype<User | null>(store.get_in_block("User", id));
+  }
+
+  static load(id: string): User | null {
+    return changetype<User | null>(store.get("User", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get tokens(): TokenLoader {
+    return new TokenLoader("User", this.get("id")!.toString(), "tokens");
+  }
+}
+
+export class TokenLoader extends Entity {
+  _entity: string;
+  _field: string;
+  _id: string;
+
+  constructor(entity: string, id: string, field: string) {
+    super();
+    this._entity = entity;
+    this._id = id;
+    this._field = field;
+  }
+
+  load(): Token[] {
+    let value = store.loadRelated(this._entity, this._id, this._field);
+    return changetype<Token[]>(value);
   }
 }

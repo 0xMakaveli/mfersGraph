@@ -1,23 +1,29 @@
 import {Transfer as TransferEvent} from "../../generated/mfers/mfers";
-import {Token,TokenMetadata} from "../../generated/schema"
+import {Token,TokenMetadata, User} from "../../generated/schema"
 import {TokenMetadata as TokenMetadataTemplate} from "../../generated/templates"
 import { json, Bytes, dataSource } from '@graphprotocol/graph-ts'
 
 
 const ipfsHash = "QmWiQE65tmpYzcokCheQmng2DCM33DEhjXcPB6PanwpAZo";
 export function handleTransfer(event: TransferEvent): void {
-    let token = Token.load(event.params.tokenId.toString());
-    if(!token) {
+  let token = Token.load(event.params.tokenId.toString());
+  if (!token) {
       token = new Token(event.params.tokenId.toString());
+      token.owner = event.params.to.toHexString();
       token.tokenID = event.params.tokenId;
-      token.tokenURI ="/" + event.params.tokenId.toString(); 
-      const ipfsHashURI  = ipfsHash + token.tokenURI;
-      token.ipfsHashURI = ipfsHashURI;
-      TokenMetadataTemplate.create(ipfsHashURI);
-    }
-    token.updatedAtTimestamp = event.block.timestamp;
-    token.save();
-    
+      token.tokenURI = "/" + event.params.tokenId.toString();
+      const ipfsHashUri = ipfsHash + token.tokenURI;
+      token.ipfsHashURI = ipfsHashUri;
+      TokenMetadataTemplate.create(ipfsHashUri);
+  }
+  token.updatedAtTimestamp = event.block.timestamp;
+  token.save();
+
+  let user = User.load(event.params.to.toHexString());
+  if (!user) {
+      user = new User(event.params.to.toHexString());
+      user.save();
+  }
 }
 
 export function handleMetadata(content: Bytes): void {
@@ -29,7 +35,7 @@ export function handleMetadata(content: Bytes): void {
 		if (name && image) {
 				tokenMetadata.name = name.toString();
 				tokenMetadata.image = image.toString();
-      			tokenMetadata.save();
+      	tokenMetadata.save();
 		}
 	}
 }

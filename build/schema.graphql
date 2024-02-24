@@ -1,6 +1,7 @@
 type Token @entity {
     id: ID!
     tokenID: BigInt!
+    owner: User!
     tokenURI: String!
     ipfsHashURI:TokenMetadata
     updatedAtTimestamp: BigInt
@@ -10,4 +11,9 @@ type TokenMetadata @entity {
     id: ID!
     image: String!
     name: String!
+}
+
+type User @entity {
+    id: ID!
+    tokens: [Token!]! @derivedFrom(field: "owner")
 }
