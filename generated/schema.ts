@@ -65,30 +65,30 @@ export class Transaction extends Entity {
     this.set("timestamp", Value.fromI32(value));
   }
 
-  get transactionFrom(): string {
+  get transactionFrom(): Bytes {
     let value = this.get("transactionFrom");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set transactionFrom(value: string) {
-    this.set("transactionFrom", Value.fromString(value));
+  set transactionFrom(value: Bytes) {
+    this.set("transactionFrom", Value.fromBytes(value));
   }
 
-  get transactionTo(): string {
+  get transactionTo(): Bytes {
     let value = this.get("transactionTo");
     if (!value || value.kind == ValueKind.NULL) {
       throw new Error("Cannot return null for a required field.");
     } else {
-      return value.toString();
+      return value.toBytes();
     }
   }
 
-  set transactionTo(value: string) {
-    this.set("transactionTo", Value.fromString(value));
+  set transactionTo(value: Bytes) {
+    this.set("transactionTo", Value.fromBytes(value));
   }
 
   get gasPrice(): BigInt | null {
