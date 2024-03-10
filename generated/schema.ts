@@ -11,6 +11,104 @@ import {
   BigDecimal,
 } from "@graphprotocol/graph-ts";
 
+export class Transaction extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Transaction entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Transaction must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`,
+      );
+      store.set("Transaction", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): Transaction | null {
+    return changetype<Transaction | null>(
+      store.get_in_block("Transaction", id),
+    );
+  }
+
+  static load(id: string): Transaction | null {
+    return changetype<Transaction | null>(store.get("Transaction", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get timestamp(): i32 {
+    let value = this.get("timestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      return 0;
+    } else {
+      return value.toI32();
+    }
+  }
+
+  set timestamp(value: i32) {
+    this.set("timestamp", Value.fromI32(value));
+  }
+
+  get transactionFrom(): string {
+    let value = this.get("transactionFrom");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set transactionFrom(value: string) {
+    this.set("transactionFrom", Value.fromString(value));
+  }
+
+  get transactionTo(): string {
+    let value = this.get("transactionTo");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set transactionTo(value: string) {
+    this.set("transactionTo", Value.fromString(value));
+  }
+
+  get gasPrice(): BigInt | null {
+    let value = this.get("gasPrice");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set gasPrice(value: BigInt | null) {
+    if (!value) {
+      this.unset("gasPrice");
+    } else {
+      this.set("gasPrice", Value.fromBigInt(<BigInt>value));
+    }
+  }
+}
+
 export class Token extends Entity {
   constructor(id: string) {
     super();

@@ -1,3 +1,12 @@
+type Transaction @entity {
+  id: ID!
+  timestamp: Int!
+  transactionFrom: String! 
+  transactionTo: String!
+  gasPrice: BigInt
+
+}
+
 type Token @entity {
     id: ID!
     tokenID: BigInt!

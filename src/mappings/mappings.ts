@@ -1,5 +1,5 @@
 import {Transfer as TransferEvent} from "../../generated/mfers/mfers";
-import {Token,TokenMetadata, User} from "../../generated/schema"
+import {Token,TokenMetadata, Transaction, User} from "../../generated/schema"
 import {TokenMetadata as TokenMetadataTemplate} from "../../generated/templates"
 import { json, Bytes, dataSource } from '@graphprotocol/graph-ts'
 
@@ -7,6 +7,7 @@ import { json, Bytes, dataSource } from '@graphprotocol/graph-ts'
 const ipfsHash = "QmWiQE65tmpYzcokCheQmng2DCM33DEhjXcPB6PanwpAZo";
 export function handleTransfer(event: TransferEvent): void {
   let token = Token.load(event.params.tokenId.toString());
+  let tx = Transaction.load(event.transaction.hash.toHex());
   if (!token) {
       token = new Token(event.params.tokenId.toString());
       token.owner = event.params.to.toHexString();
@@ -18,6 +19,14 @@ export function handleTransfer(event: TransferEvent): void {
   }
   token.updatedAtTimestamp = event.block.timestamp;
   token.save();
+  if(!tx) 
+  {   tx = new Transaction(event.transaction.hash.toHex());
+      tx.transactionFrom = event.params.from.toHexString();
+      tx.transactionTo = event.params.to.toHexString();
+  }
+  tx.gasPrice = event.transaction.gasPrice;
+  tx.timestamp = event.block.timestamp;
+  tx.save();
 
   let user = User.load(event.params.to.toHexString());
   if (!user) {
