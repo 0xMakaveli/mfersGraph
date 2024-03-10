@@ -16,6 +16,8 @@ dataSources:
       entities:
         - Token
         - Owner
+        - User
+        - Transaction
       abis:
         - name: mfers
           file: ./abis/mfers.json

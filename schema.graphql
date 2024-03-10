@@ -1,6 +1,6 @@
 type Transaction @entity {
   id: ID!
-  timestamp: Int!
+  timestamp: BigInt
   transactionFrom: Bytes! 
   transactionTo: Bytes!
   gasPrice: BigInt
