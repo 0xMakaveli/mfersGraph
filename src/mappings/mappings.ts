@@ -5,7 +5,7 @@ import { Bytes} from '@graphprotocol/graph-ts'
 
 
 export function handleTransfer(event: TransferEvent): void {
-	TokenHandler(event)
+	TokenHandler(event);
 	UserHandler(event);
 	TransactionHandler(event);
 

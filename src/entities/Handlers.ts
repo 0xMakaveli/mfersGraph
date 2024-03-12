@@ -1,7 +1,7 @@
 import {getOrCreateToken} from "./Token"
 import {Transfer as TransferEvent} from "../../generated/mfers/mfers"
 import { User,Token,Transaction} from "../../generated/schema"
-import {HASH} from "../../utils/constants"
+import {Hash} from "../../utils/constants"
 import {gerOrCreateUser} from "./User"
 import {getOrCreateTransaction} from "./Transactions"
 import {TokenMetadata as TokenMetadataTemplate} from "../../generated/templates"
@@ -12,7 +12,7 @@ export function TokenHandler(event: TransferEvent): Token
     const token = getOrCreateToken(event.params.tokenId,event.block.timestamp)
     token.owner = event.params.to.toHexString();
     token.tokenURI = "/" + token.id;
-    token.ipfsHashURI = HASH+ token.tokenURI;
+    token.ipfsHashURI = Hash+ token.tokenURI;
     TokenMetadataTemplate.create(token.ipfsHashURI as string);
     token.save();
 
