@@ -1,16 +1,19 @@
 import {Transfer as TransferEvent} from "../../generated/mfers/mfers"
 import {TokenMetadata} from "../../generated/schema"
-import {TokenTransfer} from "../entities/Token"
-import {TransactionsInfo} from "../entities/Transactions"
+import {getOrCreateToken} from "../entities/Token"
+import {} from "../entities/Transactions"
+import {TokenMetadata as TokenMetadataTemplate} from "../../generated/templates"
 import { json, Bytes, dataSource } from '@graphprotocol/graph-ts'
-import { UserInfo } from "../entities/User"
+import { gerOrCreateUser } from "../entities/User"
+import { CreateTransaction } from "../entities/Transactions"
 
-
+const ipfsHash = "QmWiQE65tmpYzcokCheQmng2DCM33DEhjXcPB6PanwpAZo";
 export function handleTransfer(event: TransferEvent): void {
-      TokenTransfer(event);
-      TransactionsInfo(event);
-      UserInfo(event);
-
+	let token = getOrCreateToken(event)
+	token.ipfsHashURI = ipfsHash + token.tokenURI;
+	TokenMetadataTemplate.create(token.ipfsHashURI);
+	gerOrCreateUser(event);
+	CreateTransaction(event);
 
 }
 

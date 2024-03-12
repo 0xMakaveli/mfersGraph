@@ -1,24 +1,23 @@
 import {Transfer as TransferEvent} from "../../generated/mfers/mfers"
 import {Token} from "../../generated/schema"
-import {TokenMetadata as TokenMetadataTemplate} from "../../generated/templates"
 
+export function CreateToken(event: TransferEvent): Token 
+{
+    let token = new Token(event.params.tokenId.toString());
+    token.owner = event.params.to.toHexString();
+    token.tokenID = event.params.tokenId;
+    token.tokenURI = "/" + event.params.tokenId.toString();
+    token.updatedAtTimestamp = event.block.timestamp;
+    token.save();
+    return token as Token
+}
 
-const ipfsHash = "QmWiQE65tmpYzcokCheQmng2DCM33DEhjXcPB6PanwpAZo";
-
-export function TokenTransfer(event: TransferEvent): Token 
+export function getOrCreateToken(event: TransferEvent): Token
 {
     let token = Token.load(event.params.tokenId.toString());
-    if (!token) {
-        token = new Token(event.params.tokenId.toString());
-        token.owner = event.params.to.toHexString();
-        token.tokenID = event.params.tokenId;
-        token.tokenURI = "/" + event.params.tokenId.toString();
-        const ipfsHashUri = ipfsHash + token.tokenURI;
-        token.ipfsHashURI = ipfsHashUri;
-        TokenMetadataTemplate.create(ipfsHashUri);
+    if(token === null)
+    {
+        token = CreateToken(event)
     }
-        token.updatedAtTimestamp = event.block.timestamp;
-        token.save();
-    
     return token as Token
 }

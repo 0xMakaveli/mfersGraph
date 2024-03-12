@@ -1,7 +1,7 @@
 import {Transfer as TransferEvent} from "../../generated/mfers/mfers"
 import {Transaction} from "../../generated/schema"
 
-export function TransactionsInfo(event: TransferEvent): Transaction 
+export function CreateTransaction(event: TransferEvent): Transaction 
 {
     let tx = new Transaction(event.transaction.hash.toHex());
     tx.transactionFrom = event.transaction.from;
