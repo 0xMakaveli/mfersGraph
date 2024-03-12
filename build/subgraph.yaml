@@ -16,23 +16,25 @@ dataSources:
       entities:
         - Token
         - Owner
+        - User
+        - Transaction
       abis:
         - name: mfers
-          file: mfers\abis\mfers.json
+          file: mfers/abis/mfers.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-      file: mfers\mfers.wasm
+      file: mfers/mfers.wasm
 templates:
   - name: TokenMetadata
     kind: file/ipfs
     mapping:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
-      file: mfers\mfers.wasm
+      file: mfers/mfers.wasm
       handler: handleMetadata
       entities:
         - TokenMetadata
       abis:
         - name: mfers
-          file: TokenMetadata\abis\mfers.json
+          file: TokenMetadata/abis/mfers.json

@@ -1,6 +1,6 @@
 type Transaction @entity {
   id: ID!
-  timestamp: BigInt
+  timestamp: BigInt!
   transactionFrom: Bytes! 
   transactionTo: Bytes!
   gasPrice: BigInt
@@ -13,7 +13,7 @@ type Token @entity {
     owner: User!
     tokenURI: String!
     ipfsHashURI:TokenMetadata
-    updatedAtTimestamp: BigInt
+    updatedAtTimestamp: BigInt!
 }
 
 type TokenMetadata @entity {
@@ -25,4 +25,5 @@ type TokenMetadata @entity {
 type User @entity {
     id: ID!
     tokens: [Token!]! @derivedFrom(field: "owner")
+    timestamp: BigInt!
 }

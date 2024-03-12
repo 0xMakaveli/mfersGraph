@@ -1,5 +1,4 @@
 import { User} from "../../generated/schema"
-import {Transfer as TransferEvent} from "../../generated/mfers/mfers"
 import {Address ,BigInt } from '@graphprotocol/graph-ts'
 
 
