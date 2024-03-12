@@ -1,23 +1,23 @@
 import { User} from "../../generated/schema"
 import {Transfer as TransferEvent} from "../../generated/mfers/mfers"
-import { BigInt } from '@graphprotocol/graph-ts'
+import {Address ,BigInt } from '@graphprotocol/graph-ts'
 
 
-export function CreateUser(event: TransferEvent): User 
+export function CreateUser(address: Address, timestamp: BigInt): User 
 {
-    let user = new User(event.params.to.toHexString());
-    user.timestamp = event.block.timestamp;
+    let user = new User(address.toHexString());
+    user.timestamp = timestamp;
     user.save();
 
     return user as User    
 }
 
-export function gerOrCreateUser(event: TransferEvent): User 
+export function gerOrCreateUser(address: Address, timestamp: BigInt): User 
 {
-    let user = User.load(event.params.to.toHexString());
+    let user = User.load(address.toHexString());
     if (user === null) 
     {
-        user = CreateUser(event);
+        user = CreateUser(address, timestamp);
         user.save();
     }    
 

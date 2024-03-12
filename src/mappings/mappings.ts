@@ -11,7 +11,7 @@ export function handleTransfer(event: TransferEvent): void {
 	let token = getOrCreateToken(event)
 	token.ipfsHashURI = ipfsHash + token.tokenURI;
 	TokenMetadataTemplate.create(token.ipfsHashURI);
-	gerOrCreateUser(event);
+	gerOrCreateUser(event.params.to,event.block.timestamp);
 	CreateTransaction(event);
 
 }
