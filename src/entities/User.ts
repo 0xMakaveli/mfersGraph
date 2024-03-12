@@ -13,7 +13,8 @@ export function CreateUser(event: TransferEvent): User
 export function gerOrCreateUser(event: TransferEvent): User 
 {
     let user = User.load(event.params.to.toHexString());
-    if (user === null) {
+    if (user === null) 
+    {
         user = CreateUser(event);
         user.save();
     }    

@@ -4,7 +4,7 @@ import {CreateTransaction} from "../entities/Transactions"
 import {TokenMetadata as TokenMetadataTemplate} from "../../generated/templates"
 import { gerOrCreateUser } from "../entities/User"
 import { CreateTokenMetadata} from "../entities/TokenMetadata"
-import { json, Bytes, dataSource } from '@graphprotocol/graph-ts'
+import { Bytes} from '@graphprotocol/graph-ts'
 
 const ipfsHash = "QmWiQE65tmpYzcokCheQmng2DCM33DEhjXcPB6PanwpAZo";
 export function handleTransfer(event: TransferEvent): void {

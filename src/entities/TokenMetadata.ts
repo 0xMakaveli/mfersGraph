@@ -5,10 +5,12 @@ export function CreateTokenMetadata(content: Bytes): TokenMetadata
 {
     let tokenMetadata = new TokenMetadata(dataSource.stringParam());
     const value = json.fromBytes(content).toObject();
-    if (value) {
+    if (value) 
+        {
         const image = value.get("image");
         const name = value.get("name");
-        if (name && image) {
+        if (name && image) 
+            {
                 tokenMetadata.name = name.toString();
                 tokenMetadata.image = image.toString();
                 tokenMetadata.save();
