@@ -52,21 +52,17 @@ export class Transaction extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get timestamp(): BigInt | null {
+  get timestamp(): BigInt {
     let value = this.get("timestamp");
     if (!value || value.kind == ValueKind.NULL) {
-      return null;
+      throw new Error("Cannot return null for a required field.");
     } else {
       return value.toBigInt();
     }
   }
 
-  set timestamp(value: BigInt | null) {
-    if (!value) {
-      this.unset("timestamp");
-    } else {
-      this.set("timestamp", Value.fromBigInt(<BigInt>value));
-    }
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
   }
 
   get transactionFrom(): Bytes {
@@ -208,21 +204,17 @@ export class Token extends Entity {
     }
   }
 
-  get updatedAtTimestamp(): BigInt | null {
+  get updatedAtTimestamp(): BigInt {
     let value = this.get("updatedAtTimestamp");
     if (!value || value.kind == ValueKind.NULL) {
-      return null;
+      throw new Error("Cannot return null for a required field.");
     } else {
       return value.toBigInt();
     }
   }
 
-  set updatedAtTimestamp(value: BigInt | null) {
-    if (!value) {
-      this.unset("updatedAtTimestamp");
-    } else {
-      this.set("updatedAtTimestamp", Value.fromBigInt(<BigInt>value));
-    }
+  set updatedAtTimestamp(value: BigInt) {
+    this.set("updatedAtTimestamp", Value.fromBigInt(value));
   }
 }
 
@@ -335,6 +327,19 @@ export class User extends Entity {
 
   get tokens(): TokenLoader {
     return new TokenLoader("User", this.get("id")!.toString(), "tokens");
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
   }
 }
 

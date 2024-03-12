@@ -1,4 +1,5 @@
 import {Transfer as TransferEvent} from "../../generated/mfers/mfers"
+import { BigInt } from '@graphprotocol/graph-ts'
 import {Token} from "../../generated/schema"
 
 export function CreateToken(event: TransferEvent): Token 
@@ -21,3 +22,8 @@ export function getOrCreateToken(event: TransferEvent): Token
     }
     return token as Token
 }
+
+export function updateToken(token: Token, timestamp: BigInt): void {
+    token.updatedAtTimestamp = timestamp;
+    token.save()
+  }
