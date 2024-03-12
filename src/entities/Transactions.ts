@@ -3,7 +3,7 @@ import {Transaction} from "../../generated/schema"
 
 export function CreateTransaction(Bytes: Bytes,timestamp: BigInt): Transaction 
 {
-    const tx = new Transaction(Bytes.toHexString());
+    let tx = new Transaction(Bytes.toHexString());
     tx.timestamp = timestamp;
     tx.save();
     return tx as Transaction

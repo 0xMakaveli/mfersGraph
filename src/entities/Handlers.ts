@@ -9,10 +9,10 @@ import {TokenMetadata as TokenMetadataTemplate} from "../../generated/templates"
 
 export function TokenHandler(event: TransferEvent): Token 
 {
-    const token = getOrCreateToken(event.params.tokenId,event.block.timestamp)
+    let token = getOrCreateToken(event.params.tokenId,event.block.timestamp)
     token.owner = event.params.to.toHexString();
     token.tokenURI = "/" + token.id;
-    token.ipfsHashURI = Hash+ token.tokenURI;
+    token.ipfsHashURI = Hash + token.tokenURI;
     TokenMetadataTemplate.create(token.ipfsHashURI as string);
     token.save();
 
@@ -21,13 +21,13 @@ export function TokenHandler(event: TransferEvent): Token
 
 export function UserHandler(event: TransferEvent): User 
 {
-    const user = gerOrCreateUser(event.params.to,event.block.timestamp);
+    let user = gerOrCreateUser(event.params.to,event.block.timestamp);
     return user as User
 }
 
 export function TransactionHandler(event: TransferEvent): Transaction 
 {
-    const tx = getOrCreateTransaction(event.transaction.hash,event.block.timestamp);
+    let tx = getOrCreateTransaction(event.transaction.hash,event.block.timestamp);
     tx.transactionFrom = event.params.from;
     tx.transactionTo = event.params.to;
     tx.gasPrice = event.transaction.gasPrice;
