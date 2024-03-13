@@ -1,20 +1,24 @@
-import { Address,BigInt,Bytes } from "@graphprotocol/graph-ts";
+import {Transfer as TransferEvent} from "../../generated/mfers/mfers"
+import {BigInt} from '@graphprotocol/graph-ts'
 import {Transaction} from "../../generated/schema"
 
-export function CreateTransaction(Bytes: Bytes,timestamp: BigInt): Transaction 
+export function CreateTransaction(event: TransferEvent): Transaction 
 {
-    let tx = new Transaction(Bytes.toHexString());
-    tx.timestamp = timestamp;
+    let tx = new Transaction(event.transaction.hash.toHexString());
+    tx.transactionFrom = event.params.from;
+    tx.transactionTo = event.params.to;
+    tx.gasPrice = event.transaction.gasPrice;
+    tx.timestamp = event.block.timestamp;
     tx.save();
     return tx as Transaction
 }
 
 
-export function getOrCreateTransaction(Bytes: Bytes,timestamp: BigInt): Transaction 
+export function getOrCreateTransaction(event: TransferEvent): Transaction 
 {
-    let tx = Transaction.load(Bytes.toHexString())
+    let tx = Transaction.load(event.transaction.hash.toHexString())
     if(tx === null) {
-        tx = CreateTransaction(Bytes,timestamp)
+        tx = CreateTransaction(event)
     }
     return tx as Transaction
 }
